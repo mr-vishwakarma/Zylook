@@ -1,0 +1,26 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Log files
+*.log
+
+# Dependency directories (future proofing)
+node_modules/
+jspm_packages/
+web_modules/
+dist/
+build/
+out/
+.env
+.env.local
+.env.*.local
