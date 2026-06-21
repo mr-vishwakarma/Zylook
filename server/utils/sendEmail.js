@@ -7,11 +7,11 @@ const sendEmail = async ({ to, subject, html, text }) => {
   const transporter = createTransporter();
 
   const mailOptions = {
-    from: `"Zylook" <${process.env.EMAIL_FROM || 'noreply@zylook.com'}>`,
+    from: `Zylook <${process.env.EMAIL_USER}>`,
     to,
     subject,
-    html,
     text,
+    html,
   };
 
   await transporter.sendMail(mailOptions);
