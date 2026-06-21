@@ -2,8 +2,8 @@ export const errorHandler = (err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Internal Server Error';
 
-  // Log error in development
-  if (process.env.NODE_ENV === 'development') {
+  // Log server errors in development (skip 401/403 auth check noise)
+  if (process.env.NODE_ENV === 'development' && statusCode >= 500) {
     console.error('❌ Error:', {
       message: err.message,
       stack: err.stack,
