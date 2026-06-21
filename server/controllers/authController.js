@@ -3,7 +3,7 @@ import User from '../models/User.js';
 import { generateToken } from '../utils/generateToken.js';
 import { ApiError } from '../utils/apiError.js';
 import { isValidEmail } from '../utils/validators.js';
-import sendEmail from '../utils/sendEmail.js';
+// import sendEmail from '../utils/sendEmail.js'; // TODO: re-enable when email is configured
 
 /**
  * @desc    Register a new user
@@ -43,22 +43,8 @@ export const register = async (req, res, next) => {
       emailVerificationExpires: Date.now() + 24 * 60 * 60 * 1000, // 24 hours
     });
 
-    // Send verification email
-    const verifyUrl = `${process.env.CLIENT_URL}/verify-email/${verificationToken}`;
-    try {
-      await sendEmail({
-        to: user.email,
-        subject: 'Zylook — Verify Your Email',
-        html: `
-          <h2>Welcome to Zylook, ${user.name}!</h2>
-          <p>Click the link below to verify your email address:</p>
-          <a href="${verifyUrl}" style="display:inline-block;padding:12px 24px;background:#6366f1;color:#fff;text-decoration:none;border-radius:8px;">Verify Email</a>
-          <p>This link expires in 24 hours.</p>
-        `,
-      });
-    } catch (emailError) {
-      console.warn('⚠️ Email sending failed:', emailError.message);
-    }
+    // TODO: Send verification email (re-enable when email is configured)
+    // const verifyUrl = `${process.env.CLIENT_URL}/verify-email/${verificationToken}`;
 
     // Generate token and set cookie
     const token = generateToken(res, user._id);
@@ -209,17 +195,8 @@ export const forgotPassword = async (req, res, next) => {
     user.passwordResetExpires = Date.now() + 60 * 60 * 1000; // 1 hour
     await user.save();
 
-    const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
-    await sendEmail({
-      to: user.email,
-      subject: 'Zylook — Reset Your Password',
-      html: `
-        <h2>Password Reset</h2>
-        <p>Click the link below to reset your password:</p>
-        <a href="${resetUrl}" style="display:inline-block;padding:12px 24px;background:#6366f1;color:#fff;text-decoration:none;border-radius:8px;">Reset Password</a>
-        <p>This link expires in 1 hour.</p>
-      `,
-    });
+    // TODO: Send reset email (re-enable when email is configured)
+    // const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
 
     res.status(200).json({
       success: true,
