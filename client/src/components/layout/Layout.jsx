@@ -7,31 +7,31 @@ const Layout = () => {
 
   if (isAuthPage) {
     return (
-      <div className="app-layout" style={{ minHeight: '100vh', justifyContent: 'center', background: '#09090b' }}>
-        <main className="main-content" style={{ padding: '1rem', width: '100%' }}>
-          <Outlet />
-        </main>
+      <div className="min-h-screen w-full bg-black">
+        <Outlet />
       </div>
     );
   }
 
   return (
-    <div className="app-layout">
-      <header className="navbar">
-        <div className="navbar-brand">
-          <a href="/">Zylook</a>
+    <div className="flex flex-col min-h-screen w-full max-w-[1126px] mx-auto border-x border-[var(--border)] text-center box-border">
+      <header className="flex justify-between items-center px-8 py-6 border-b border-[var(--border)] bg-white/70 dark:bg-[#16171d]/70 backdrop-blur-md">
+        <div className="text-2xl font-bold tracking-tight text-[var(--text-h)]">
+          <a href="/" className="hover:opacity-85 transition-opacity">
+            Zylook<span className="text-[var(--accent)]">.</span>
+          </a>
         </div>
-        <nav className="navbar-links">
+        <nav className="flex items-center gap-4">
           {/* Navigation links will be added in subsequent steps */}
         </nav>
       </header>
 
-      <main className="main-content">
+      <main className="flex-1 flex flex-col justify-center items-center p-8">
         <Outlet />
       </main>
 
-      <footer className="footer">
-        <p>&copy; 2026 Zylook. All rights reserved.</p>
+      <footer className="px-8 py-6 border-t border-[var(--border)] text-sm text-[var(--text)] bg-white/50 dark:bg-[#16171d]/50 backdrop-blur-md">
+        <p>&copy; {new Date().getFullYear()} Zylook. All rights reserved.</p>
       </footer>
     </div>
   );

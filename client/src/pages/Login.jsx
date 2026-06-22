@@ -114,79 +114,81 @@ const Login = () => {
       </div>
 
       {/* Right Side - Immersive Dark Form */}
-      <div className="flex-1 flex flex-col justify-center max-w-[440px] mx-auto md:mx-0 py-6 text-left z-10 w-full">
-        <div className="mb-8">
-          <h3 className="text-2xl font-bold text-white mb-1.5 tracking-tight">Sign In Account</h3>
-          <p className="text-zinc-400 text-sm">Enter your credentials to access your account.</p>
-        </div>
+      <div className="flex-1 flex items-center justify-center p-6 md:p-12 z-10 w-full">
+        <div className="w-full max-w-[440px] py-6 text-left">
+          <div className="mb-8">
+            <h3 className="text-2xl font-bold text-white mb-1.5 tracking-tight">Sign In Account</h3>
+            <p className="text-zinc-400 text-sm">Enter your credentials to access your account.</p>
+          </div>
 
-        {/* Social Login Grid */}
-        <div className="grid grid-cols-2 gap-3.5 mb-6">
-          <Button
-            variant="social"
-            size="md"
-            onClick={() => handleSocialLogin('Google')}
-            icon={GoogleIcon}
-          >
-            Google
-          </Button>
-          <Button
-            variant="social"
-            size="md"
-            onClick={() => handleSocialLogin('Github')}
-            icon={GithubIcon}
-          >
-            Github
-          </Button>
-        </div>
+          {/* Social Login Grid */}
+          <div className="grid grid-cols-2 gap-3.5 mb-6">
+            <Button
+              variant="social"
+              size="md"
+              onClick={() => handleSocialLogin('Google')}
+              icon={GoogleIcon}
+            >
+              Google
+            </Button>
+            <Button
+              variant="social"
+              size="md"
+              onClick={() => handleSocialLogin('Github')}
+              icon={GithubIcon}
+            >
+              Github
+            </Button>
+          </div>
 
-        {/* Divider */}
-        <div className="flex items-center text-center my-6 text-zinc-800">
-          <div className="flex-1 border-b border-zinc-900" />
-          <span className="px-3.5 text-xs text-zinc-500 font-bold uppercase tracking-widest">Or</span>
-          <div className="flex-1 border-b border-zinc-900" />
-        </div>
+          {/* Divider */}
+          <div className="flex items-center text-center my-6 text-zinc-800">
+            <div className="flex-1 border-b border-zinc-900" />
+            <span className="px-3.5 text-xs text-zinc-500 font-bold uppercase tracking-widest">Or</span>
+            <div className="flex-1 border-b border-zinc-900" />
+          </div>
 
-        {/* Login Form */}
-        <form onSubmit={handleSubmit} className="w-full">
-          <Input
-            label="Email"
-            id="email"
-            type="email"
-            placeholder="eg. johnfrans@gmail.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            disabled={loading}
-            required
-          />
+          {/* Login Form */}
+          <form onSubmit={handleSubmit} className="w-full">
+            <Input
+              label="Email"
+              id="email"
+              type="email"
+              placeholder="eg. johnfrans@gmail.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
+              required
+            />
 
-          <Input
-            label="Password"
-            id="password"
-            type="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            disabled={loading}
-            required
-          />
+            <Input
+              label="Password"
+              id="password"
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
+              required
+            />
 
-          <Button
-            type="submit"
-            variant="white"
-            size="lg"
-            loading={loading}
-            className="mt-6 w-full"
-          >
-            Sign In
-          </Button>
-        </form>
+            <Button
+              type="submit"
+              variant="white"
+              size="lg"
+              loading={loading}
+              className="mt-6 w-full"
+            >
+              Sign In
+            </Button>
+          </form>
 
-        <div className="mt-8 text-center text-sm text-zinc-500">
-          Don't have an account?{' '}
-          <Link to="/register" className="text-white font-semibold hover:underline">
-            Sign up
-          </Link>
+          <div className="mt-8 text-center text-sm text-zinc-500">
+            Don't have an account?{' '}
+            <Link to="/register" className="text-white font-semibold hover:underline">
+              Sign up
+            </Link>
+          </div>
         </div>
       </div>
     </div>

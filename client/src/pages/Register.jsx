@@ -126,101 +126,103 @@ const Register = () => {
       </div>
 
       {/* Right Side - Immersive Dark Form */}
-      <div className="flex-1 flex flex-col justify-center max-w-[440px] mx-auto md:mx-0 py-6 text-left z-10 w-full">
-        <div className="mb-8">
-          <h3 className="text-2xl font-bold text-white mb-1.5 tracking-tight">Sign Up Account</h3>
-          <p className="text-zinc-400 text-sm">Enter your personal data to create your account.</p>
-        </div>
-
-        {/* Social Register Grid */}
-        <div className="grid grid-cols-2 gap-3.5 mb-6">
-          <Button
-            variant="social"
-            size="md"
-            onClick={() => handleSocialRegister('Google')}
-            icon={GoogleIcon}
-          >
-            Google
-          </Button>
-          <Button
-            variant="social"
-            size="md"
-            onClick={() => handleSocialRegister('Github')}
-            icon={GithubIcon}
-          >
-            Github
-          </Button>
-        </div>
-
-        {/* Divider */}
-        <div className="flex items-center text-center my-6 text-zinc-800">
-          <div className="flex-1 border-b border-zinc-900" />
-          <span className="px-3.5 text-xs text-zinc-500 font-bold uppercase tracking-widest">Or</span>
-          <div className="flex-1 border-b border-zinc-900" />
-        </div>
-
-        {/* Registration Form */}
-        <form onSubmit={handleSubmit} className="w-full">
-          <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-4.5">
-            <Input
-              label="First Name"
-              id="firstName"
-              placeholder="eg. John"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              disabled={loading}
-              required
-            />
-            <Input
-              label="Last Name"
-              id="lastName"
-              placeholder="eg. Francisco"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              disabled={loading}
-              required
-            />
+      <div className="flex-1 flex items-center justify-center p-6 md:p-12 z-10 w-full">
+        <div className="w-full max-w-[440px] py-6 text-left">
+          <div className="mb-8">
+            <h3 className="text-2xl font-bold text-white mb-1.5 tracking-tight">Sign Up Account</h3>
+            <p className="text-zinc-400 text-sm">Enter your personal data to create your account.</p>
           </div>
 
-          <Input
-            label="Email"
-            id="email"
-            type="email"
-            placeholder="eg. johnfrans@gmail.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            disabled={loading}
-            required
-          />
+          {/* Social Register Grid */}
+          <div className="grid grid-cols-2 gap-3.5 mb-6">
+            <Button
+              variant="social"
+              size="md"
+              onClick={() => handleSocialRegister('Google')}
+              icon={GoogleIcon}
+            >
+              Google
+            </Button>
+            <Button
+              variant="social"
+              size="md"
+              onClick={() => handleSocialRegister('Github')}
+              icon={GithubIcon}
+            >
+              Github
+            </Button>
+          </div>
 
-          <Input
-            label="Password"
-            id="password"
-            type="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            disabled={loading}
-            required
-            helperText="Must be at least 8 characters."
-          />
+          {/* Divider */}
+          <div className="flex items-center text-center my-6 text-zinc-800">
+            <div className="flex-1 border-b border-zinc-900" />
+            <span className="px-3.5 text-xs text-zinc-500 font-bold uppercase tracking-widest">Or</span>
+            <div className="flex-1 border-b border-zinc-900" />
+          </div>
 
-          <Button
-            type="submit"
-            variant="white"
-            size="lg"
-            loading={loading}
-            className="mt-6 w-full"
-          >
-            Sign Up
-          </Button>
-        </form>
+          {/* Registration Form */}
+          <form onSubmit={handleSubmit} className="w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-4.5">
+              <Input
+                label="First Name"
+                id="firstName"
+                placeholder="eg. John"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                disabled={loading}
+                required
+              />
+              <Input
+                label="Last Name"
+                id="lastName"
+                placeholder="eg. Francisco"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                disabled={loading}
+                required
+              />
+            </div>
 
-        <div className="mt-8 text-center text-sm text-zinc-500">
-          Already have an account?{' '}
-          <Link to="/login" className="text-white font-semibold hover:underline">
-            Log in
-          </Link>
+            <Input
+              label="Email"
+              id="email"
+              type="email"
+              placeholder="eg. johnfrans@gmail.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
+              required
+            />
+
+            <Input
+              label="Password"
+              id="password"
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
+              required
+              helperText="Must be at least 8 characters."
+            />
+
+            <Button
+              type="submit"
+              variant="white"
+              size="lg"
+              loading={loading}
+              className="mt-6 w-full"
+            >
+              Sign Up
+            </Button>
+          </form>
+
+          <div className="mt-8 text-center text-sm text-zinc-500">
+            Already have an account?{' '}
+            <Link to="/login" className="text-white font-semibold hover:underline">
+              Log in
+            </Link>
+          </div>
         </div>
       </div>
     </div>
