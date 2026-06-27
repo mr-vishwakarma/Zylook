@@ -1,10 +1,11 @@
 import { Outlet, useLocation } from 'react-router-dom';
 
-// Layout component wraps the route contents and conditionally renders the Navbar/Footer
 const Layout = () => {
   const location = useLocation();
   const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+  const isHomePage = location.pathname === '/';
 
+  // Auth pages — full-screen dark, no chrome
   if (isAuthPage) {
     return (
       <div className="min-h-screen w-full bg-black">
@@ -13,9 +14,19 @@ const Layout = () => {
     );
   }
 
+  // Home page — full-width, the page owns its own navbar + footer
+  if (isHomePage) {
+    return (
+      <div className="w-full min-h-screen bg-white">
+        <Outlet />
+      </div>
+    );
+  }
+
+  // Default layout for inner pages — centered container
   return (
     <div className="flex flex-col min-h-screen w-full max-w-[1126px] mx-auto border-x border-[var(--border)] text-center box-border">
-      <header className="flex justify-between items-center px-8 py-6 border-b border-[var(--border)] bg-white/70 dark:bg-[#16171d]/70 backdrop-blur-md">
+      <header className="flex justify-between items-center px-8 py-6 border-b border-[var(--border)] bg-white/70 backdrop-blur-md">
         <div className="text-2xl font-bold tracking-tight text-[var(--text-h)]">
           <a href="/" className="hover:opacity-85 transition-opacity">
             Zylook<span className="text-[var(--accent)]">.</span>
@@ -30,7 +41,7 @@ const Layout = () => {
         <Outlet />
       </main>
 
-      <footer className="px-8 py-6 border-t border-[var(--border)] text-sm text-[var(--text)] bg-white/50 dark:bg-[#16171d]/50 backdrop-blur-md">
+      <footer className="px-8 py-6 border-t border-[var(--border)] text-sm text-[var(--text)] bg-white/50 backdrop-blur-md">
         <p>&copy; {new Date().getFullYear()} Zylook. All rights reserved.</p>
       </footer>
     </div>
