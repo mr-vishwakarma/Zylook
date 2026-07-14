@@ -1,11 +1,10 @@
 import express from 'express';
 import { protect } from '../middleware/auth.js';
+import { createPaymentOrder, verifyPayment } from '../controllers/paymentController.js';
 
 const router = express.Router();
 
-// TODO: Implement in Step 6 — Payment Integration
-// router.post('/create-order', protect, createPaymentOrder);     // Razorpay order
-// router.post('/verify', protect, verifyPayment);                // Verify payment signature
-// router.post('/webhook', handlePaymentWebhook);                 // Razorpay webhook (no auth)
+router.post('/create-order', protect, createPaymentOrder);
+router.post('/verify', protect, verifyPayment);
 
 export default router;

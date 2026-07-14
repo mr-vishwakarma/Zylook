@@ -1,11 +1,21 @@
 import api from './api';
 
-// TODO: Implement in Step 7
-export const orderService = {
+const orderService = {
+  // POST /api/orders — { shippingAddress, paymentMethod, paymentTransactionId? }
   createOrder: (data) => api.post('/orders', data),
-  getMyOrders: () => api.get('/orders'),
+
+  // GET /api/orders/my
+  getMyOrders: (params = {}) => api.get('/orders/my', { params }),
+
+  // GET /api/orders/:id
   getOrderById: (id) => api.get(`/orders/${id}`),
-  cancelOrder: (id) => api.put(`/orders/${id}/cancel`),
+
+  // PUT /api/orders/:id/cancel
+  cancelOrder: (id, reason) => api.put(`/orders/${id}/cancel`, { reason }),
+
+  // Admin
+  getAllOrders: (params = {}) => api.get('/orders/all', { params }),
+  updateOrderStatus: (id, status) => api.put(`/orders/${id}/status`, { status }),
 };
 
 export default orderService;

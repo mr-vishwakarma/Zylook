@@ -1,14 +1,25 @@
 import express from 'express';
 import { protect } from '../middleware/auth.js';
 import { admin } from '../middleware/admin.js';
+import {
+  createOrder,
+  getMyOrders,
+  getOrderById,
+  cancelOrder,
+  updateOrderStatus,
+  getAllOrders,
+} from '../controllers/orderController.js';
 
 const router = express.Router();
 
-// TODO: Implement in Step 7 — Order Management
-// router.post('/', protect, createOrder);
-// router.get('/', protect, getMyOrders);
-// router.get('/:id', protect, getOrderById);
-// router.put('/:id/status', protect, admin, updateOrderStatus);
-// router.put('/:id/cancel', protect, cancelOrder);
+// User routes
+router.post('/', protect, createOrder);
+router.get('/my', protect, getMyOrders);
+router.get('/:id', protect, getOrderById);
+router.put('/:id/cancel', protect, cancelOrder);
+
+// Admin routes
+router.get('/all', protect, admin, getAllOrders);
+router.put('/:id/status', protect, admin, updateOrderStatus);
 
 export default router;

@@ -29,7 +29,31 @@
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Admin Theme Tokens ─── */
+:root[data-theme="light"] {
+  --admin-bg: #f4f4f5;
+  --admin-surface: #ffffff;
+  --admin-surface-hover: #f4f4f5;
+  --admin-border: #e4e4e7;
+  --admin-text: #09090b;
+  --admin-text-muted: #52525b;
+  --admin-btn-bg: #09090b;
+  --admin-btn-text: #ffffff;
+}
+
+:root[data-theme="dark"] {
+  --admin-bg: #08080d;
+  --admin-surface: #111116;
+  --admin-surface-hover: rgba(255,255,255,0.04);
+  --admin-border: rgba(255,255,255,0.08);
+  --admin-text: #ffffff;
+  --admin-text-muted: rgba(255,255,255,0.7);
+  --admin-btn-bg: #ffffff;
+  --admin-btn-text: #000000;
 }
 
 /* ─── Resets ─── */
@@ -48,7 +72,6 @@ body {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 /* ─── Typography ─── */

@@ -33,6 +33,10 @@ Place your images in the folders below. The code already references these paths.
 | `neon-drift-jacket.jpg` | `/assets/products/neon-drift-jacket.jpg` | Product card #4 — Neon Drift Jacket |
 | `prism-cargo-pants.jpg` | `/assets/products/prism-cargo-pants.jpg` | Product card #5 — Prism Cargo Pants |
 | `aurora-beanie.jpg` | `/assets/products/aurora-beanie.jpg` | Product card #6 — Aurora Beanie |
+| `volt-track-shorts.jpg` | `/assets/products/volt-track-shorts.jpg` | Product card #7 — Volt Track Shorts |
+| `obsidian-crossbody.jpg` | `/assets/products/obsidian-crossbody.jpg` | Product card #8 — Obsidian Crossbody |
+| `zenith-sunglasses.jpg` | `/assets/products/zenith-sunglasses.jpg` | Product card #9 — Zenith Sunglasses |
+| `apex-tech-joggers.jpg` | `/assets/products/apex-tech-joggers.jpg` | Product card #10 — Apex Tech Joggers |
 | `featured-tee-thumb.jpg` | `/assets/products/featured-tee-thumb.jpg` | Featured Product card on hero (small thumbnail, ~300×300px) |
 
 ---

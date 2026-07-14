@@ -1,6 +1,9 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Search, Heart, ShoppingBag, User, ArrowRight, Star, Sparkles, Zap, ChevronRight } from 'lucide-react';
+import { Search, ShoppingBag, User, ArrowRight, Star, Sparkles, Zap, ChevronRight } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import Navbar from '../components/layout/Navbar';
+import productService from '../services/productService';
 
 /* ─────────────────────────────────────────────────────────
    REUSABLE: scroll-triggered fade-in wrapper
@@ -71,58 +74,33 @@ const features = [
    HOME PAGE COMPONENT
    ═════════════════════════════════════════════════════════ */
 const Home = () => {
+  const [trending, setTrending] = useState([]);
+  const [featured, setFeatured] = useState(null);
+
+  useEffect(() => {
+    const fetchHomeData = async () => {
+      try {
+        const { data } = await productService.getProducts({ tags: 'trending', limit: 8, isActive: true });
+        if (data?.products?.length > 0) {
+          setTrending(data.products);
+          setFeatured(data.products[0]);
+        } else {
+          // fallback if no trending tag
+          const { data: latest } = await productService.getProducts({ limit: 8, sort: '-createdAt', isActive: true });
+          setTrending(latest.products || []);
+          setFeatured(latest.products?.[0] || null);
+        }
+      } catch (err) {
+        console.error('Failed to load home data', err);
+      }
+    };
+    fetchHomeData();
+  }, []);
+
   return (
     <div className="w-full bg-white">
       {/* ════════════ NAVBAR ════════════ */}
-      <nav className="flex items-center justify-between px-10 py-5">
-        {/* Left nav links */}
-        <div className="flex items-center gap-8">
-          {['Shop', 'Collections', 'About', 'Contact'].map((link) => (
-            <a
-              key={link}
-              href="#"
-              className="text-[13px] font-medium text-zinc-500 hover:text-zinc-900 transition-colors tracking-wide"
-            >
-              {link}
-            </a>
-          ))}
-        </div>
-
-        {/* Center logo */}
-        <div className="absolute left-1/2 -translate-x-1/2 hidden md:block">
-          <a href="/">
-            <img
-              src="/assets/logo/zylook-logo.png"
-              alt="Zylook"
-              className="h-36 object-contain"
-              onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.innerHTML = '<span class="text-xl font-black tracking-[0.12em] text-zinc-900 uppercase">Zylook</span>'; }}
-            />
-          </a>
-        </div>
-
-        {/* Right actions */}
-        <div className="flex items-center gap-5">
-          <button className="p-1.5 text-zinc-500 hover:text-zinc-900 transition-colors">
-            <Search size={18} strokeWidth={2} />
-          </button>
-          <div className="flex items-center gap-1">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-200 to-rose-300 flex items-center justify-center">
-              <User size={14} className="text-white" />
-            </div>
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-rose-300 to-pink-400 -ml-2 flex items-center justify-center border-2 border-white">
-              <span className="text-[10px] font-bold text-white">Z</span>
-            </div>
-          </div>
-          <motion.button
-            className="flex items-center gap-2 pl-3 pr-4 py-2 rounded-full bg-[#ff6c6e] text-white text-xs font-semibold"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            <ShoppingBag size={14} />
-            1 product
-          </motion.button>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* ════════════ HERO SECTION ════════════ */}
       <section className="relative px-10 pb-0 pt-4">
@@ -347,19 +325,27 @@ const Home = () => {
 
                   {/* Product image area */}
                   <div className="w-full aspect-[4/3] rounded-[16px] overflow-hidden mb-3 bg-gradient-to-br from-amber-50 to-rose-50 relative">
-                    <img
-                      src="/assets/products/featured-tee-thumb.jpg"
-                      alt="Urban Vanguard Tee"
-                      className="w-full h-full object-cover"
-                    />
+                    {featured?.images?.[0] ? (
+                      <img
+                        src={featured.images[0]}
+                        alt={featured.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <img
+                        src="/assets/products/featured-tee-thumb.jpg"
+                        alt="Featured Product"
+                        className="w-full h-full object-cover"
+                      />
+                    )}
                   </div>
 
                   {/* Product info */}
-                  <h4 className="text-[15px] font-bold text-zinc-900 mb-0.5">
-                    Urban Vanguard Tee
+                  <h4 className="text-[15px] font-bold text-zinc-900 mb-0.5 line-clamp-1">
+                    {featured?.name || 'Loading...'}
                   </h4>
-                  <p className="text-[12px] text-zinc-400 mb-3">
-                    Unmatched bold comfort.
+                  <p className="text-[12px] text-zinc-400 mb-3 line-clamp-1">
+                    {featured?.description || 'Discover our top pick for you.'}
                   </p>
 
                   {/* Price pill */}
@@ -369,7 +355,7 @@ const Home = () => {
                       whileHover={{ scale: 1.05 }}
                     >
                       <ShoppingBag size={11} />
-                      $56.75
+                      ₹{featured?.discountPrice > 0 ? featured.discountPrice : (featured?.price || 0)}
                     </motion.span>
                   </div>
                 </motion.div>
@@ -428,128 +414,90 @@ const Home = () => {
         </Reveal>
 
         {/* Product Cards Grid */}
-        <div className="grid grid-cols-3 gap-7">
-          {[
-            {
-              name: 'Urban Vanguard Tee',
-              tagline: 'Unmatch bold comfort',
-              desc: 'Step into the future of streetwear with our premium organic cotton tee.',
-              price: 56.75,
-              badge: 'Best Seller',
-              image: '/assets/products/urban-vanguard-tee.jpg',
-            },
-            {
-              name: 'Shadow Runner Hoodie',
-              tagline: 'Own the night',
-              desc: 'Heavyweight French terry hoodie with reflective accents and oversized fit.',
-              price: 129,
-              originalPrice: 159,
-              badge: 'New Drop',
-              image: '/assets/products/shadow-runner-hoodie.jpg',
-            },
-            {
-              name: 'Retro Wave Sneakers',
-              tagline: 'Classic meets future',
-              desc: 'Step back into classic hoops style with durable leather and modern cushioning.',
-              price: 111,
-              badge: 'Limited',
-              image: '/assets/products/retro-wave-sneakers.jpg',
-            },
-            {
-              name: 'Neon Drift Jacket',
-              tagline: 'Flow with colour',
-              desc: 'Water-resistant windbreaker with holographic trim for festival season.',
-              price: 189,
-              originalPrice: 225,
-              image: '/assets/products/neon-drift-jacket.jpg',
-            },
-            {
-              name: 'Prism Cargo Pants',
-              tagline: 'Utility remastered',
-              desc: 'Six-pocket cargo with tapered legs and elastic ankle cuffs.',
-              price: 94,
-              badge: 'Trending',
-              image: '/assets/products/prism-cargo-pants.jpg',
-            },
-            {
-              name: 'Aurora Beanie',
-              tagline: 'Keep the edge warm',
-              desc: 'Merino-blend ribbed beanie with embroidered Zylook monogram.',
-              price: 34,
-              image: '/assets/products/aurora-beanie.jpg',
-            },
-          ].map((product, i) => (
-            <Reveal key={product.name} delay={i * 0.08}>
-              <motion.div
-                className="group relative flex flex-col bg-white rounded-[24px] overflow-hidden border border-zinc-100 cursor-pointer"
-                style={{ boxShadow: '0 2px 20px rgba(0,0,0,0.04)' }}
-                whileHover={{ y: -8, boxShadow: '0 16px 48px rgba(0,0,0,0.1)' }}
-                transition={{ type: 'spring', stiffness: 300, damping: 24 }}
-              >
-                {/* Image area */}
-                <div className="relative w-full aspect-[4/3] bg-zinc-100 overflow-hidden">
-                  {/* Badge */}
-                  {product.badge && (
-                    <span className="absolute top-4 left-4 z-10 px-3 py-1 bg-black/80 text-white text-[10px] font-semibold rounded-full">
-                      {product.badge}
-                    </span>
-                  )}
-
-                  {/* Heart button */}
-                  <motion.button
-                    className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-white/80 shadow-sm text-zinc-400 hover:text-red-400 transition-colors"
-                    whileTap={{ scale: 0.85 }}
-                  >
-                    <Heart size={14} />
-                  </motion.button>
-
-                  {/* Product image */}
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-
-                  {/* Dot indicators */}
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
-                    {[0, 1, 2].map((d) => (
-                      <div
-                        key={d}
-                        className={`w-1.5 h-1.5 rounded-full transition-all ${d === 0 ? 'bg-zinc-800 w-4' : 'bg-zinc-300'}`}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="flex flex-col gap-1.5 p-5 flex-1">
-                  <h3 className="text-[15px] font-bold text-zinc-900 leading-tight tracking-tight">
-                    {product.name}
-                  </h3>
-                  <p className="text-[12px] font-medium text-zinc-400">{product.tagline}</p>
-                  <p className="text-[11px] text-zinc-400 leading-relaxed line-clamp-2 mt-0.5">
-                    {product.desc}
-                  </p>
-
-                  {/* Price + CTA */}
-                  <div className="flex items-center justify-between mt-auto pt-4">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[18px] font-bold text-zinc-900">${product.price}</span>
-                      {product.originalPrice && (
-                        <span className="text-[12px] text-zinc-300 line-through">${product.originalPrice}</span>
-                      )}
-                    </div>
-                    <motion.button
-                      className="flex items-center gap-1 px-4 py-2 bg-zinc-900 text-white text-[11px] font-semibold rounded-full"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+        <div className="grid grid-cols-4 gap-6 max-w-[1300px] mx-auto">
+          {trending.map((product, i) => (
+            <Reveal key={product._id} delay={i * 0.08}>
+              <Link to={`/product/${product._id}`} className="block w-full h-full">
+                <motion.div
+                  className="group relative flex flex-col bg-white rounded-[16px] overflow-hidden cursor-pointer h-full border border-zinc-100"
+                  style={{
+                    boxShadow: '0 2px 12px rgba(0,0,0,0.04), 0 1px 4px rgba(0,0,0,0.03)',
+                  }}
+                  whileHover={{
+                    y: -6,
+                    boxShadow: '0 12px 40px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.05)',
+                  }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+                >
+                  {/* Image area */}
+                  <div className="relative w-full aspect-[4/3] overflow-hidden bg-zinc-100 rounded-t-[16px]">
+                    {product.tags?.includes('new') && (
+                      <motion.span
+                        className="absolute top-3 left-3 z-10 px-3 py-1 text-[10px] font-semibold text-white rounded-full"
+                        style={{
+                          background: 'rgba(255,255,255,0.18)',
+                          backdropFilter: 'blur(12px)',
+                          WebkitBackdropFilter: 'blur(12px)',
+                          border: '1px solid rgba(255,255,255,0.25)',
+                        }}
+                        initial={{ opacity: 0, x: -8 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.3 }}
+                      >
+                        New
+                      </motion.span>
+                    )}
+                    <motion.div
+                      className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white flex items-center justify-center"
+                      style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
+                      whileHover={{ scale: 1.1, rotate: 8 }}
+                      whileTap={{ scale: 0.9 }}
                     >
-                      Buy Now
-                      <ArrowRight size={11} strokeWidth={2.5} />
-                    </motion.button>
+                      <span className="text-[10px] font-black text-zinc-900">Z</span>
+                    </motion.div>
+                    {product.images?.[0] ? (
+                      <img
+                        src={product.images[0]}
+                        alt={product.name}
+                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-zinc-400 bg-zinc-50">
+                        <ShoppingBag size={32} />
+                      </div>
+                    )}
+                    <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
                   </div>
-                </div>
-              </motion.div>
+
+                  {/* Content */}
+                  <div className="flex flex-col px-5 pt-5 pb-7 flex-1">
+                    <h3 className="text-[15px] font-extrabold text-zinc-900 leading-tight tracking-[-0.01em] mb-1.5 line-clamp-1">
+                      {product.name}
+                    </h3>
+                    <p className="text-[12px] font-medium text-zinc-400 mb-3 line-clamp-1">{product.description}</p>
+                    <div className="flex items-center justify-between mt-auto">
+                      <div className="flex items-center gap-1.5">
+                        <span className="inline-flex items-center px-3 py-1.5 bg-zinc-100 text-zinc-900 text-[14px] font-bold rounded-full">
+                          ₹{product.discountPrice > 0 ? product.discountPrice : product.price}
+                        </span>
+                        {product.discountPrice > 0 && (
+                          <span className="text-[11px] text-zinc-300 line-through">
+                            ₹{product.price}
+                          </span>
+                        )}
+                      </div>
+                      <motion.button
+                        className="flex items-center gap-1 px-4 py-1.5 bg-zinc-900 text-white text-[12px] font-semibold rounded-full"
+                        whileHover={{ scale: 1.06 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        View
+                        <ArrowRight size={10} strokeWidth={2.5} />
+                      </motion.button>
+                    </div>
+                  </div>
+                </motion.div>
+              </Link>
             </Reveal>
           ))}
         </div>

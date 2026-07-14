@@ -102,9 +102,8 @@ const outfitSchema = new mongoose.Schema(
 outfitSchema.index({ title: 'text', description: 'text', tags: 'text' });
 
 // Virtual: calculate savings before save
-outfitSchema.pre('save', function (next) {
+outfitSchema.pre('save', function () {
   this.savings = this.totalPrice - this.bundlePrice;
-  next();
 });
 
 const Outfit = mongoose.model('Outfit', outfitSchema);

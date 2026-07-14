@@ -1,4 +1,5 @@
 import { Outlet, useLocation } from 'react-router-dom';
+import Navbar from './Navbar';
 
 const Layout = () => {
   const location = useLocation();
@@ -14,7 +15,7 @@ const Layout = () => {
     );
   }
 
-  // Home page — full-width, the page owns its own navbar + footer
+  // Home page — has its own embedded navbar
   if (isHomePage) {
     return (
       <div className="w-full min-h-screen bg-white">
@@ -23,26 +24,20 @@ const Layout = () => {
     );
   }
 
-  // Default layout for inner pages — centered container
+  // All other pages — use shared Navbar
   return (
-    <div className="flex flex-col min-h-screen w-full max-w-[1126px] mx-auto border-x border-[var(--border)] text-center box-border">
-      <header className="flex justify-between items-center px-8 py-6 border-b border-[var(--border)] bg-white/70 backdrop-blur-md">
-        <div className="text-2xl font-bold tracking-tight text-[var(--text-h)]">
-          <a href="/" className="hover:opacity-85 transition-opacity">
-            Zylook<span className="text-[var(--accent)]">.</span>
-          </a>
-        </div>
-        <nav className="flex items-center gap-4">
-          {/* Navigation links will be added in subsequent steps */}
-        </nav>
-      </header>
-
-      <main className="flex-1 flex flex-col justify-center items-center p-8">
+    <div className="flex flex-col min-h-screen w-full bg-[#f9f8f6]">
+      <Navbar />
+      <main className="flex-1 flex flex-col w-full">
         <Outlet />
       </main>
-
-      <footer className="px-8 py-6 border-t border-[var(--border)] text-sm text-[var(--text)] bg-white/50 backdrop-blur-md">
-        <p>&copy; {new Date().getFullYear()} Zylook. All rights reserved.</p>
+      <footer className="px-8 py-6 border-t border-[#e5e4e7] text-xs text-[#6b6375] bg-white flex items-center justify-between">
+        <p>© {new Date().getFullYear()} Zylook. All rights reserved.</p>
+        <div className="flex items-center gap-4">
+          <a href="/shop" className="hover:text-[#08060d] transition-colors">Shop</a>
+          <a href="/orders" className="hover:text-[#08060d] transition-colors">Orders</a>
+          <a href="/cart" className="hover:text-[#08060d] transition-colors">Cart</a>
+        </div>
       </footer>
     </div>
   );
